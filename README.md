@@ -1,56 +1,69 @@
-# SoftwareArtifacts
+# Software Artifacts Hub (PHP + MySQL)
 
-A collection of reusable software artifacts for consistent and maintainable projects.
+Kompletna aplikacja webowa do zarządzania repozytoriami i publikowania software artifacts.
 
-## Overview
+## Stack
 
-This repository provides a set of standard software artifacts — templates, configuration files, and documentation — designed to help teams establish consistency across projects.
+- PHP 8+
+- MySQL / MariaDB
+- Czysty HTML/CSS/JavaScript (bez frameworków)
 
-## Contents
+## Struktura projektu
 
-| Artifact | Description |
-|---|---|
-| `README.md` | Project overview and usage guide |
-| `LICENSE` | MIT open-source license |
-| `CONTRIBUTING.md` | Guidelines for contributors |
-| `CHANGELOG.md` | Version history and release notes |
-| `.gitignore` | Common patterns for ignored files |
-
-## Getting Started
-
-### Prerequisites
-
-- Git 2.x or later
-
-### Installation
-
-Clone this repository:
-
-```bash
-git clone https://github.com/chmajster/-SoftwareArtifacts.git
-cd -SoftwareArtifacts
+```text
+/public
+/app
+  /Controllers
+  /Core
+  /Helpers
+  /Models
+  /Services
+  /Views
+/config
+/install
+  /sql
+/storage
+  /artifacts
+  /logs
+  /cache
 ```
 
-### Usage
+## Instalacja
 
-Copy the desired artifact(s) from this repository into your own project:
+1. Skonfiguruj vhost/document root na katalog `public/`.
+2. Wejdź w przeglądarce na `/install/`.
+3. Uzupełnij formularz DB i uruchom instalację.
+4. Instalator:
+   - sprawdza podstawowe wymagania,
+   - importuje `install/sql/schema.sql` i `install/sql/seed.sql`,
+   - tworzy konto administratora `admin/admin` (hasło hashowane przez `password_hash`),
+   - zapisuje `config/config.local.php`,
+   - tworzy `storage/installed.lock` i blokuje ponowne uruchomienie instalatora.
 
-```bash
-cp LICENSE /path/to/your/project/
-cp .gitignore /path/to/your/project/
-cp CONTRIBUTING.md /path/to/your/project/
-```
+## Logowanie
 
-Adjust the content of each file to match your project's specific details (e.g., replace placeholder names, dates, and descriptions).
+Po instalacji:
+- login: `admin`
+- hasło: `admin`
 
-## Contributing
+## API (podstawowe)
 
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+- `GET /public/metadata.php?slug={repo_slug}` – JSON metadata repozytorium.
+- `GET /artifacts/download?id={artifact_id}` – pobieranie pliku artifactu.
 
-## Changelog
+## Bezpieczeństwo
 
-See [CHANGELOG.md](CHANGELOG.md) for the list of changes in each release.
+- `password_hash` i `password_verify`
+- CSRF tokeny
+- Prepared statements (PDO)
+- Escaping danych wyjściowych (`htmlspecialchars`)
+- Walidacja uploadów (rozszerzenia, rozmiar)
+- Bezpieczne sesje (httponly, samesite)
 
-## License
+## Rozszerzalność
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+System jest przygotowany pod dalszą rozbudowę m.in. o:
+- webhooki,
+- upload CI/CD przez tokeny,
+- podpisy GPG,
+- prywatne feedy i integracje.
