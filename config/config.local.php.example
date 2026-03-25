@@ -1,0 +1,28 @@
+<?php
+return [
+    'app' => [
+        'name' => 'Software Artifacts Hub',
+        'base_url' => 'http://localhost:8000',
+        'debug' => true,
+        'timezone' => 'UTC',
+        'installed' => false,
+    ],
+    'db' => [
+        'host' => '127.0.0.1',
+        'port' => 3306,
+        'database' => 'artifacts_hub',
+        'username' => 'root',
+        'password' => '',
+        'charset' => 'utf8mb4',
+    ],
+    'security' => [
+        'session_name' => 'artifacts_session',
+        'csrf_key' => '_csrf',
+        'max_upload_mb' => 512,
+        'allowed_extensions' => ['rpm', 'deb', 'exe', 'msi', 'zip', 'tar.gz', 'appimage', 'pkg', 'dmg'],
+    ],
+    'storage' => [
+        'artifacts_path' => __DIR__ . '/../storage/artifacts',
+        'logs_path' => __DIR__ . '/../storage/logs',
+    ],
+];
